@@ -1,0 +1,44 @@
+@model CrudTest.Models.Telefone
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Editar</h1>
+
+<h4>Telefone</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TelefoneId" />
+            <div class="form-group">
+                <label asp-for="UsuarioID" class="control-label"></label>
+                <select asp-for="UsuarioID" class="form-control" asp-items="ViewBag.UsuarioID"></select>
+                <span asp-validation-for="UsuarioID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumeroTelefone" class="control-label"></label>
+                <input asp-for="NumeroTelefone" class="form-control" />
+                <span asp-validation-for="NumeroTelefone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Situacao" class="control-label"></label>
+                <input asp-for="Situacao" class="form-control" />
+                <span asp-validation-for="Situacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
