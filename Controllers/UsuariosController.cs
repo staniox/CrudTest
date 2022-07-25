@@ -62,7 +62,7 @@ namespace CrudTest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Nome,Email,DataNascimento")] Usuario usuario)
         {
-            if (ModelState.IsValid && _context.Usuarios.Any(u => u.Email == usuario.Email))
+            if (ModelState.IsValid && !_context.Usuarios.Any(u => u.Email == usuario.Email))
             {
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
