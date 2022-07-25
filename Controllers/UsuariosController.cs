@@ -62,11 +62,18 @@ namespace CrudTest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Nome,Email,DataNascimento")] Usuario usuario)
         {
-            if (ModelState.IsValid && !_context.Usuarios.Any(u => u.Email == usuario.Email))
+            var validEmail = !_context.Usuarios.Any(u => u.Email == usuario.Email);
+            if (ModelState.IsValid && validEmail)
             {
+                TempData["Message"] = "Usuario Salvo com sucesso";
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewBag.Error = true;
+                ViewBag.Message = validEmail ? "Erro na solicitacao" : "Email invalido ou ja utilizado" ;
             }
             return View(usuario);
         }
@@ -99,10 +106,13 @@ namespace CrudTest.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid && !_context.Usuarios.Any(u => u.Email == usuario.Email && u.UsuarioId != usuario.UsuarioId))
+            var validEmail = !_context.Usuarios.Any(u => u.Email == usuario.Email && u.UsuarioId != usuario.UsuarioId);
+
+            if (ModelState.IsValid && validEmail)
             {
                 try
                 {
+                    TempData["Message"] = "Usuario Alterado com sucesso";
                     _context.Update(usuario);
                     await _context.SaveChangesAsync();
                 }
@@ -118,6 +128,11 @@ namespace CrudTest.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewBag.Error = true;
+                ViewBag.Message = validEmail ? "Erro ao alterar funcionario" : "Email invalido ou ja utilizado";
             }
             return View(usuario);
         }
@@ -153,6 +168,12 @@ namespace CrudTest.Controllers
             if (usuario != null)
             {
                 _context.Usuarios.Remove(usuario);
+                TempData["Message"] = "Usuario Removido com sucesso";
+            }
+            else
+            {
+                ViewBag.Error = true;
+                ViewBag.Message = "Erro ao remover usuario";
             }
             
             await _context.SaveChangesAsync();

@@ -64,9 +64,15 @@ namespace CrudTest.Controllers
         {
             if (ModelState.IsValid)
             {
+                TempData["Message"] = "Documento criado com sucesso";
                 _context.Add(endereco);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewBag.Error = true;
+                ViewBag.Message = "Erro ao criar Endereco. verifique se o Usuario Selecionado possui Endereco";
             }
             ViewData["UsuarioId"] = _usuarioRepository.GetSelectList();
             return View(endereco);
@@ -105,6 +111,7 @@ namespace CrudTest.Controllers
             {
                 try
                 {
+                    TempData["Message"] = "Endereco Alterado com sucesso";
                     _context.Update(endereco);
                     await _context.SaveChangesAsync();
                 }
@@ -120,6 +127,11 @@ namespace CrudTest.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewBag.Error = true;
+                ViewBag.Message = "Erro ao Editar Endereco. verifique se o Usuario Selecionado possui Endereco";
             }
             ViewData["UsuarioId"] = _usuarioRepository.GetSelectList();
             return View(endereco);
@@ -156,7 +168,13 @@ namespace CrudTest.Controllers
             var endereco = await _context.Enderecos.FindAsync(id);
             if (endereco != null)
             {
+                TempData["Message"] = "Endereco removido com sucesso";
                 _context.Enderecos.Remove(endereco);
+            }
+            else
+            {
+                ViewBag.Error = true;
+                ViewBag.Message = "Erro ao remover Endereco";
             }
             
             await _context.SaveChangesAsync();

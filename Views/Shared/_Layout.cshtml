@@ -42,13 +42,17 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted bg-dark">
-        <div class="container text-light text-center">
-            &copy; 2022 - CrudTest - Bruno Gomes
-        </div>
-    </footer>
+<footer class="border-top footer text-muted bg-dark">
+    <div class="container text-light text-center">
+        &copy; 2022 - CrudTest - Bruno Gomes
+    </div>
+</footer>
+<span id="message" hidden data-type="@ViewBag.Error">@(ViewBag.Message ?? TempData["Message"])</span>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

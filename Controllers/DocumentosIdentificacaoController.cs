@@ -71,9 +71,15 @@ namespace CrudTest.Controllers
             documentoIdentificacao.Usuario = _context.Usuarios.Find(documentoIdentificacao.UsuarioId) ?? null;
             if (ModelState.IsValid && _context.Usuarios.Any(u => u.UsuarioId == documentoIdentificacao.UsuarioId))
             {
+                TempData["Message"] = "Documento Criado com sucesso";
                 _context.Add(documentoIdentificacao);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewBag.Error = true;
+                ViewBag.Message = "Erro ao Criar Documento. Verifique se o Usuario ja possui Documento Cadastrado" ;
             }
             ViewData["UsuarioId"] = _usuarioRepository.GetSelectList();
             return View(documentoIdentificacao);
@@ -112,6 +118,7 @@ namespace CrudTest.Controllers
             {
                 try
                 {
+                    TempData["Message"] = "Documento Alterado com sucesso";
                     _context.Update(documentoIdentificacao);
                     await _context.SaveChangesAsync();
                 }
@@ -127,6 +134,11 @@ namespace CrudTest.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewBag.Error = true;
+                ViewBag.Message = "Erro ao alterar Documento";
             }
             ViewData["UsuarioId"] = _usuarioRepository.GetSelectList();
             return View(documentoIdentificacao);
@@ -163,8 +175,15 @@ namespace CrudTest.Controllers
             var documentoIdentificacao = await _context.DocumentoIdentificacoes.FindAsync(id);
             if (documentoIdentificacao != null)
             {
+                TempData["Message"] = "Usuario removido com sucesso";
                 _context.DocumentoIdentificacoes.Remove(documentoIdentificacao);
+            } 
+            else
+            {
+                ViewBag.Error = true;
+                ViewBag.Message ="Erro ao remover funcionario";
             }
+            
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

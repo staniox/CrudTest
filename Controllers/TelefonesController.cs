@@ -64,9 +64,15 @@ namespace CrudTest.Controllers
         {
             if (ModelState.IsValid)
             {
+                TempData["Message"] = "Telefone criado com sucesso";
                 _context.Add(telefone);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewBag.Error = true;
+                ViewBag.Message = "Erro ao criar Telefone";
             }
             ViewData["UsuarioID"] = _usuarioRepository.GetSelectList();
             return View(telefone);
@@ -105,6 +111,7 @@ namespace CrudTest.Controllers
             {
                 try
                 {
+                    TempData["Message"] = "Telefone Alterado com sucesso";
                     _context.Update(telefone);
                     await _context.SaveChangesAsync();
                 }
@@ -120,6 +127,11 @@ namespace CrudTest.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewBag.Error = true;
+                ViewBag.Message = "Erro ao editar Telefone";
             }
             ViewData["UsuarioID"] = _usuarioRepository.GetSelectList();
             return View(telefone);
@@ -156,7 +168,13 @@ namespace CrudTest.Controllers
             var telefone = await _context.Telefones.FindAsync(id);
             if (telefone != null)
             {
+                TempData["Message"] = "Telefone removido com sucesso";
                 _context.Telefones.Remove(telefone);
+            }
+            else
+            {
+                ViewBag.Error = true;
+                ViewBag.Message = "Erro ao remover Endereco";
             }
             
             await _context.SaveChangesAsync();
