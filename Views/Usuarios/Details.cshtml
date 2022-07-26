@@ -29,6 +29,155 @@
     </dl>
 </div>
 <div>
+    <h4>Documento</h4>
+    @if (Model.DocumentoIdentificacao != null)
+    {
+        <a class="btn btn-primary" asp-controller="DocumentosIdentificacao" asp-action="Edit" asp-route-id="@Model.DocumentoIdentificacao.DocumentoIdentificacaoId">Editar</a>
+    }
+    <hr />
+    @if (Model.DocumentoIdentificacao != null)
+    {
+        <dl class="row">
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.DocumentoIdentificacao.TipoDocumento)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.DocumentoIdentificacao.TipoDocumento)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.DocumentoIdentificacao.NumeroDocumento)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.DocumentoIdentificacao.NumeroDocumento)
+            </dd>
+        </dl>
+    }
+    else
+    {
+        <dl class="row">
+            <dt class="col-sm-12">
+                <span>Nenhum Telefone cadastrado</span>
+            </dt>
+        </dl>
+    }
+</div>
+<div>
+    <h4>Endereco</h4>
+    @if (Model.Endereco != null)
+    {
+        <a class="btn btn-primary" asp-controller="Enderecos" asp-action="Edit" asp-route-id="@Model.Endereco.EnderecoId">Editar</a>
+    }
+    <hr />
+    @if (Model.Endereco != null)
+    {
+        <dl class="row">
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Endereco.Logradouro)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Endereco.Logradouro)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Endereco.Numero)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Endereco.Numero)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Endereco.Cep)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Endereco.Cep)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Endereco.Bairro)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Endereco.Bairro)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Endereco.Cidade)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Endereco.Cidade)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Endereco.Estado)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Endereco.Estado)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Endereco.Complemento)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Endereco.Complemento)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Endereco.Situacao)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Endereco.Situacao)
+                </dd>
+            </dl>
+    }
+    else
+    {
+       <dl class="row">
+           <dt class="col-sm-12">
+               <span>Endereco nao cadastrado</span>
+           </dt>
+       </dl>
+    }
+    
+</div>
+<div>
+    <h4>Telefones</h4>
+    <hr/>
+    @if (Model.Telefones.Count > 0)
+    {
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameForInnerType((Telefone t) => t.NumeroTelefone)
+                </th>
+                <th>
+                    @Html.DisplayNameForInnerType((Telefone t) => t.Situacao)
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Telefones)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumeroTelefone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Situacao)
+                    </td>
+                     <td>
+                        <a asp-controller="Telefones" asp-action="Edit" asp-route-id="@item.TelefoneId">Editar</a>
+                        <a asp-controller="Telefones" asp-action="Details" asp-route-id="@item.TelefoneId">Detalhes</a>
+                        <a asp-controller="Telefones" asp-action="Delete" asp-route-id="@item.TelefoneId">Deletar</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <dl class="row">
+            <dt class="col-sm-12">
+                <span>Nenhum Telefone cadastrado</span>
+            </dt>
+        </dl>
+    }
+</div>
+<div>
     <a asp-action="Edit" asp-route-id="@Model?.UsuarioId">Editar</a> |
     <a asp-action="Index">Voltar</a>
 </div>

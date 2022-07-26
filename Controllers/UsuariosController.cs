@@ -40,6 +40,9 @@ namespace CrudTest.Controllers
             }
 
             var usuario = await _context.Usuarios
+                .Include(u => u.DocumentoIdentificacao)
+                .Include(u => u.Endereco)
+                .Include(u => u.Telefones)
                 .FirstOrDefaultAsync(m => m.UsuarioId == id);
             if (usuario == null)
             {
