@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CrudTest.Data;
 using CrudTest.Models;
-using CrudTest.Repositories;
 using CrudTest.Repositories.Interfaces;
 
 namespace CrudTest.Controllers
@@ -71,10 +66,20 @@ namespace CrudTest.Controllers
             documentoIdentificacao.Usuario = _context.Usuarios.Find(documentoIdentificacao.UsuarioId) ?? null;
             if (ModelState.IsValid && _context.Usuarios.Any(u => u.UsuarioId == documentoIdentificacao.UsuarioId))
             {
-                TempData["Message"] = "Documento Criado com sucesso";
-                _context.Add(documentoIdentificacao);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(documentoIdentificacao);
+                    await _context.SaveChangesAsync(); 
+                    TempData["Message"] = "Documento Criado com sucesso";
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException)
+                {
+                    ViewBag.Error = true;
+                    ViewBag.Message = "O Usuario ja possui Documento Cadastrado!" ;
+                }
+               
             }
             else
             {
@@ -118,10 +123,11 @@ namespace CrudTest.Controllers
             {
                 try
                 {
-                    TempData["Message"] = "Documento Alterado com sucesso";
                     _context.Update(documentoIdentificacao);
                     await _context.SaveChangesAsync();
+                    TempData["Message"] = "Documento Alterado com sucesso";
                 }
+                
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!DocumentoIdentificacaoExists(documentoIdentificacao.DocumentoIdentificacaoId))
@@ -132,6 +138,13 @@ namespace CrudTest.Controllers
                     {
                         throw;
                     }
+                }
+                catch (DbUpdateException)
+                {
+                    ViewBag.Error = true;
+                    ViewBag.Message = "O Usuario ja possui Documento Cadastrado!" ;
+                    ViewData["UsuarioId"] = _usuarioRepository.GetSelectList();
+                    return View(documentoIdentificacao);
                 }
                 return RedirectToAction(nameof(Index));
             }

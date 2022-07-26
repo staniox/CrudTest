@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CrudTest.Data;
 using CrudTest.Models;
@@ -64,10 +59,21 @@ namespace CrudTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                TempData["Message"] = "Documento criado com sucesso";
-                _context.Add(endereco);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    TempData["Message"] = "Documento criado com sucesso";
+                    _context.Add(endereco);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException)
+                {
+                    ViewBag.Error = true;
+                    ViewBag.Message = "O Usuario ja possui Endereco Cadastrado!" ;
+                    ViewData["UsuarioId"] = _usuarioRepository.GetSelectList();
+                    return View(endereco);
+                }
+               
             }
             else
             {
@@ -125,6 +131,13 @@ namespace CrudTest.Controllers
                     {
                         throw;
                     }
+                }
+                catch (DbUpdateException)
+                {
+                    ViewBag.Error = true;
+                    ViewBag.Message = "O Usuario ja possui Documento Cadastrado!" ;
+                    ViewData["UsuarioId"] = _usuarioRepository.GetSelectList();
+                    return View(endereco);
                 }
                 return RedirectToAction(nameof(Index));
             }
